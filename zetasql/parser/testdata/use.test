@@ -1,0 +1,24 @@
+
+use db
+--
+UseStatement [0-6]
+  Identifier(db) [4-6]
+--
+USE db
+==
+
+use use
+--
+UseStatement [0-7]
+  Identifier(use) [4-7]
+--
+USE use
+==
+
+use `db.table.db`
+--
+UseStatement [0-17]
+  Identifier(`db.table.db`) [4-17]
+--
+USE `db.table.db`
+==

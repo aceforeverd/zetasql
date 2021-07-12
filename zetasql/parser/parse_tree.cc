@@ -334,6 +334,7 @@ static absl::flat_hash_map<ASTNodeKind, std::string> CreateNodeNamesMap() {
   map[AST_UPDATE_ITEM] = "UpdateItem";
   map[AST_UPDATE_SET_VALUE] = "UpdateSetValue";
   map[AST_UPDATE_STATEMENT] = "UpdateStatement";
+  map[AST_USE_STATEMENT] = "UseStatement";
   map[AST_USING_CLAUSE] = "UsingClause";
   map[AST_VARIABLE_DECLARATION] = "VariableDeclaration";
   map[AST_WHERE_CLAUSE] = "WhereClause";

@@ -922,6 +922,7 @@ using zetasql::ASTDropStatement;
 %token KW_UNPIVOT "UNPIVOT"
 %token KW_UNTIL "UNTIL"
 %token KW_UPDATE "UPDATE"
+%token KW_USE "USE"
 %token KW_VALUE "VALUE"
 %token KW_VALUES "VALUES"
 %token KW_VOLATILE "VOLATILE"
@@ -1107,6 +1108,7 @@ using zetasql::ASTDropStatement;
 %type <node> merge_when_clause_list
 %type <node> model_clause
 %type <node> module_statement
+%type <node> use_statement
 %type <node> nested_dml_statement
 %type <expression> new_constructor
 %type <node> new_constructor_arg
@@ -1574,6 +1576,7 @@ sql_statement_body:
     | call_statement
     | import_statement
     | module_statement
+    | use_statement
     ;
 
 query_statement:
@@ -3373,6 +3376,13 @@ module_statement:
       {
         $$ = MAKE_NODE(ASTModuleStatement, @$, {$2, $3});
       }
+    ;
+
+use_statement:
+    "USE" identifier
+    {
+      $$ = MAKE_NODE(ASTUseStatement, @$, {$2});
+    }
     ;
 
 index_order_by_prefix:
@@ -7356,6 +7366,7 @@ keyword_as_identifier:
     | "UNPIVOT"
     | "UNTIL"
     | "UPDATE"
+    | "USE"
     | "VALUE"
     | "VALUES"
     | "VIEW"
@@ -8809,6 +8820,8 @@ next_statement_kind_without_hint:
       { $$ = zetasql::ASTAssertStatement::kConcreteNodeKind; }
     | "TRUNCATE"
       { $$ = zetasql::ASTTruncateStatement::kConcreteNodeKind; }
+    | "USE"
+      { $$ = zetasql::ASTUseStatement::kConcreteNodeKind; }
     ;
 
 %%

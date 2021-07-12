@@ -1301,6 +1301,11 @@ void Unparser::visitASTOnClause(const ASTOnClause* node, void* data) {
   }
 }
 
+void Unparser::visitASTUseStatement(const ASTUseStatement* node, void* data) {
+    print("USE");
+    node->db_name()->Accept(this, data);
+}
+
 void Unparser::visitASTOnOrUsingClauseList(const ASTOnOrUsingClauseList* node,
                                            void* data) {
   for (const ASTNode* clause : node->on_or_using_clause_list()) {

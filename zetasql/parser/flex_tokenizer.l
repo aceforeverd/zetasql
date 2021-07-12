@@ -634,6 +634,7 @@ unnest { return BisonParserImpl::token::KW_UNNEST; }
 unique { return BisonParserImpl::token::KW_UNIQUE; }
 until { return BisonParserImpl::token::KW_UNTIL; }
 update { return BisonParserImpl::token::KW_UPDATE; }
+use { return BisonParserImpl::token::KW_USE; }
 using { return BisonParserImpl::token::KW_USING; }
 value { return BisonParserImpl::token::KW_VALUE; }
 values { return BisonParserImpl::token::KW_VALUES; }

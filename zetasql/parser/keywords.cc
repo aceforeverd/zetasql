@@ -289,6 +289,7 @@ constexpr KeywordInfoPOD kAllKeywords[] = {
     {"unique", KW_UNIQUE},
     {"until", KW_UNTIL},
     {"update", KW_UPDATE},
+    {"use", KW_USE},
     {"using", KW_USING, KeywordInfo::kReserved},
     {"value", KW_VALUE},
     {"values", KW_VALUES},

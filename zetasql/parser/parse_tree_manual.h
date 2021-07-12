@@ -684,6 +684,27 @@ class ASTImportStatement final : public ASTStatement {
   const ASTOptionsList* options_list_ = nullptr;  // May be NULL.
 };
 
+class ASTUseStatement final : public ASTStatement {
+ public:
+  static constexpr ASTNodeKind kConcreteNodeKind = AST_USE_STATEMENT;
+
+  ASTUseStatement() : ASTStatement(kConcreteNodeKind) {}
+
+  void Accept(ParseTreeVisitor* visitor, void* data) const override;
+  zetasql_base::StatusOr<VisitResult> Accept(
+      NonRecursiveParseTreeVisitor* visitor) const override;
+
+  const ASTIdentifier* db_name() const { return db_name_; }
+
+ private:
+  void InitFields() final {
+    FieldLoader fl(this);
+    fl.AddRequired(&db_name_);
+  }
+
+  const ASTIdentifier* db_name_ = nullptr;
+};
+
 class ASTModuleStatement final : public ASTStatement {
  public:
   static constexpr ASTNodeKind kConcreteNodeKind = AST_MODULE_STATEMENT;
