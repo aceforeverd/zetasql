@@ -22,3 +22,17 @@ UseStatement [0-17]
 --
 USE `db.table.db`
 ==
+
+use db1 db2
+--
+ERROR: Syntax error: Expected end of input but got identifier "db2" [at 1:9]
+use db1 db2
+        ^
+==
+
+use
+--
+ERROR: Syntax error: Unexpected end of statement [at 1:4]
+use
+   ^
+==
