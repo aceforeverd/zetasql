@@ -6,7 +6,7 @@ name: Build
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master, feat/hyrbidse-zetasql]
+    branches: [ master, test/arm64]
     tags:
       - v*
   pull_request:
@@ -120,7 +120,8 @@ jobs:
   linux-build:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/aceforeverd/hybridsql-base:0.0.8
+      image: ghcr.io/aceforeverd/hybridsql-base:0.4.0-beta5
+      options: '--platform=linux/arm64'
     env:
       BAZEL_LINKOPTS: '-static-libstdc++:-lm'
       BAZEL_LINKLIBS: '-l%:libstdc++.a'
