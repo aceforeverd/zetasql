@@ -122,7 +122,7 @@ else
 fi
 
 if [[ $OSTYPE = 'darwin'* ]]; then
-    tar czf "${ZETASQL_LIB_NAME}-darwin-$(arch).tar.gz" "${ZETASQL_LIB_NAME}"/
+    tar czf "${ZETASQL_LIB_NAME}-darwin-$(uname -m).tar.gz" "${ZETASQL_LIB_NAME}"/
 else
-    tar czf "${ZETASQL_LIB_NAME}-$OSTYPE-$(arch).tar.gz" "${ZETASQL_LIB_NAME}"/
+    tar czf "${ZETASQL_LIB_NAME}-$OSTYPE-$(uname -m).tar.gz" "${ZETASQL_LIB_NAME}"/
 fi
