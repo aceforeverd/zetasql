@@ -120,7 +120,7 @@ jobs:
   linux-build:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/aceforeverd/hybridsql-base:0.4.0-beta7
+      image: ghcr.io/aceforeverd/hybridsql-base:0.4.0
     env:
       BAZEL_LINKOPTS: '-static-libstdc++:-lm'
       BAZEL_LINKLIBS: '-l%:libstdc++.a'
