@@ -10,10 +10,10 @@ export ROOT=$(pwd)
 export ZETASQL_LIB_NAME="libzetasql-$VERSION"
 export PREFIX="$ROOT/${ZETASQL_LIB_NAME}"
 
-rm -rf tmp-lib libzetasql.mri ${PREFIX}
+rm -rf tmp-lib libzetasql.mri "${PREFIX}"
 mkdir -p tmp-lib
-mkdir -p ${PREFIX}
-mkdir -p ${PREFIX}/lib
+mkdir -p "${PREFIX}"
+mkdir -p "${PREFIX}"/lib
 
 install_lib() {
     local file
@@ -35,7 +35,7 @@ install_gen_include_file() {
     file=$1
     local outfile
     outfile=$(echo "$file" | sed -e 's/^.*proto\///')
-    
+
     if [[ "$OSTYPE" == "linux-gnu"* ]]
     then
         INSTALL_BIN="install"
@@ -120,11 +120,9 @@ else
     libtool -static -o libzetasql.a tmp-lib/*.a
     mv libzetasql.a "$PREFIX/lib"
 fi
-echo "ls zetasqllib"
-ls "${PREFIX}/lib"
-if [[ "$OSTYPE" == "linux-gnu"* ]]
-then
-    tar czf "${ZETASQL_LIB_NAME}-linux-x86_64.tar.gz" "${ZETASQL_LIB_NAME}"/
+
+if [[ $OSTYPE = 'darwin'* ]]; then
+    tar czf "${ZETASQL_LIB_NAME}-darwin-$(arch).tar.gz" "${ZETASQL_LIB_NAME}"/
 else
-    tar czf "${ZETASQL_LIB_NAME}-darwin-x86_64.tar.gz" "${ZETASQL_LIB_NAME}"/
+    tar czf "${ZETASQL_LIB_NAME}-$OSTYPE-$(arch).tar.gz" "${ZETASQL_LIB_NAME}"/
 fi

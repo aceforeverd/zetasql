@@ -120,7 +120,7 @@ jobs:
   linux-build:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/aceforeverd/hybridsql-base:0.4.0-beta5
+      image: ghcr.io/aceforeverd/hybridsql-base:0.4.0-beta7
       options: '--platform=linux/arm64'
     env:
       BAZEL_LINKOPTS: '-static-libstdc++:-lm'
@@ -140,20 +140,7 @@ jobs:
         run: |
           source /opt/rh/devtoolset-8/enable
           source /opt/rh/rh-python38/enable
-          bazel build ${{ env.target }} ${{ env.build_argv }}
-
-      - name: Test
-        run: |
-          bazel test ${{ env.build_argv }} --test_summary=detailed ${{ env.target }}
-
-      - name: build zetasql parser dependencies
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          bazel clean
-          bazel query 'deps(//zetasql/parser:parser)' |grep //zetasql | xargs bazel build ${{ env.build_argv }}
-          bazel build "@com_googleapis_googleapis//:all" ${{ env.build_argv }}
-          bazel query "@com_google_file_based_test_driver//..." |xargs bazel build ${{ env.build_argv }}
-          bazel build "@com_googlesource_code_re2//:re2" ${{ env.build_argv }}
+          ./build_zetasql_parser.sh
 
       - name: Determine Version
         if: ${{ github.event_name == 'push' }}
@@ -196,23 +183,10 @@ jobs:
         run: |
           brew install coreutils
           brew install binutils
-      - name: print toolchain info
-        run: |
-          gcc -v
-          g++ -v
-          python -V
-          java -version
 
       - name: build
         run: |
-          bazel build ${{ env.build_argv }} ${{ env.target }}
-          bazel build "@com_googleapis_googleapis//:all" ${{ env.build_argv }}
-          bazel build "@com_google_file_based_test_driver//file_based_test_driver:all" ${{ env.build_argv }}
-          bazel build "@com_googlesource_code_re2//:re2" ${{ env.build_argv }}
-
-      - name: test
-        run: |
-          bazel test ${{ env.build_argv }} --test_summary=detailed ${{ env.target }}
+          ./build_zetasql_parser.sh
 
       - name: Determine Version
         if: ${{ github.event_name == 'push' }}
