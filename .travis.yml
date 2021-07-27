@@ -1,0 +1,15 @@
+os: linux
+arch: arm64
+dist: focal
+# virt: vm
+# group: edge
+language: c++
+
+install:
+  - sudo curl --create-dirs -SLo /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v1.10.1/bazelisk-linux-arm64
+  - sudo chmod +x /usr/local/bin/bazel
+script:
+  - ./build_zetasql_parser.sh
+  - ./pack_zetasql.sh
+
+
