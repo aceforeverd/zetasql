@@ -4,7 +4,9 @@
 
 set -eE
 
-cd "$(dirname "$0")"
+pushd "$(dirname "$0")"
+pushd "$(git rev-parse --show-toplevel)"
+
 VERSION=${TAG:-$(git rev-parse --short HEAD)}
 export ROOT=$(pwd)
 export ZETASQL_LIB_NAME="libzetasql-$VERSION"
@@ -126,3 +128,6 @@ if [[ $OSTYPE = 'darwin'* ]]; then
 else
     tar czf "${ZETASQL_LIB_NAME}-$OSTYPE-$(uname -m).tar.gz" "${ZETASQL_LIB_NAME}"/
 fi
+
+popd
+popd

@@ -18,8 +18,16 @@
 
 set -eE
 
+pushd "$(dirname "$0")"
+pushd "$(git rev-parse --show-toplevel)"
+
 export BAZEL_LINKOPTS='-static-libstdc++:-lm'
 export BAZEL_LINKLIBS='-l%:libstdc++.a'
+
+if [[ $(arch) = 'aarch64' ]]; then
+    # need upgrade abseil and bazel to compile on aarch64
+    git apply aarch64.patch
+fi
 
 TARGET='//zetasql/parser/...'
 BUILD_ARGV='--features=-supports_dynamic_linker'
@@ -36,3 +44,6 @@ bazel build "@com_googlesource_code_re2//:re2" "$BUILD_ARGV"
 
 unset BAZEL_LINKLIBS
 unset BAZEL_LINKOPTS
+
+popd
+popd
