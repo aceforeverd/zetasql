@@ -1,0 +1,26 @@
+os: linux
+arch: arm64-graviton2
+dist: focal
+virt: vm
+group: edge
+language: cpp
+
+install:
+  - sudo curl --create-dirs -SLo /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v1.10.1/bazelisk-linux-arm64
+  - sudo chmod +x /usr/local/bin/bazel
+  - sudo apt-get install -y openjdk-8-jdk
+script:
+  - ./build_zetasql_parser.sh
+
+before_deploy:
+  - TAG=${TRAVIS_TAG#v} ./pack_zetasql.sh
+
+deploy:
+  provider: releases
+  api_key:
+    secure: "bzUtqEZHFO7F9DV7P8PoTqZl+OF4FIT0KhxGxk1sRtr9ehVyjefmvREkroHjSoYKUp1oHOeDN6OQmWDk0Efeo7aCLL7Cc40rakSKLmzdH0gfFj3nH+R5wjegJskDsOp9tK7yi0F069T0R6hSOfHkgRqWHpdpm3qSp13YKBnzQ6JpeUgGotyqES1558yRqqNRfNBTHKT0I4T70HfC0spBkk30nuyBIaNAkoRq5XLCmM71OGjpNb6wo2m9laN4droLco7dfB5/EotD+kow4NjXqOf97Yhb6DGM2w7z5UP+b8Vf5WXgiue9JZ7K2Af0YGOapSXi6cfnMaQxVy/0N7be273+KY/g+V50ujBoJbC5+svy0QpY/4Op0zxysXRQ9pATcH67EtR3KENZunT7Ko5NAvyc516k7LSsAckICR0C56r0oNUBr14KaOQ2CR1ea7LHuthusK6eBm+VFJ94PJta6rVcwusrqoRnuO5PDw2lJXSD3kQfTVQUYCIrM3Q0ySidhJY69Ymc/zDq6O2zSOrTp6D1ZlGxsGaJvJbf3F4omfAeZIVp91IGvVCPk3nAygoSMCgtKAfpFbkssp5EDmhIoZI4YFMQOwSaiCGuSGakER0Ihj2Jp/B72bjDT/TrPJDHHEQzlgBrvtYL/1GdjIgS5VmN/rcPgzve5aeeUMMqkp8="
+  file_glob: true
+  file: libzetasql-*.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true
