@@ -26,6 +26,8 @@
 #include "absl/types/span.h"
 
 namespace zetasql {
+std::string Unparse(const ASTNode* node);
+
 namespace parser {
 
 class Formatter {
