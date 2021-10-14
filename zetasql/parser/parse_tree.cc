@@ -25,6 +25,7 @@
 #include "zetasql/parser/ast_node_kind.h"
 #include "zetasql/parser/parse_tree_errors.h"
 #include "zetasql/parser/parse_tree_visitor.h"
+#include "zetasql/parser/unparser.h"
 // This is not a header -- it is a generated part of this source file.
 #include "zetasql/parser/parse_tree_accept_methods.inc"  
 #include "zetasql/parser/visit_result.h"
@@ -1610,6 +1611,22 @@ std::string ASTAlterStatementBase::SingleNodeDebugString() const {
     return node_name;
   }
   return absl::StrCat(node_name, "(is_if_exists)");
+}
+
+std::string ASTDeployStatement::UnparseStmt() const {
+  std::string unparsed_;
+  parser::Unparser unparser(&unparsed_);
+  stmt_->Accept(&unparser, nullptr);
+  unparser.FlushLine();
+  return unparsed_;
+}
+
+std::string ASTSelectIntoStatement::UnparseQuery() const {
+  std::string unparsed_;
+  parser::Unparser unparser(&unparsed_);
+  query_->Accept(&unparser, nullptr);
+  unparser.FlushLine();
+  return unparsed_;
 }
 
 std::ostream& operator<<(std::ostream& out, SchemaObjectKind kind) {

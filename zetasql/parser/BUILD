@@ -231,6 +231,7 @@ cc_library(
         "parse_tree_manual.h",
         "parse_tree_visitor.h",
         "visit_result.h",
+        "unparser.h",
     ],
     copts = [
         "-Wno-char-subscripts",

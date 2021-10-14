@@ -651,6 +651,8 @@ class ASTDeployStatement final : public ASTStatement {
   zetasql_base::StatusOr<VisitResult> Accept(
       NonRecursiveParseTreeVisitor* visitor) const override;
 
+  std::string UnparseStmt() const;
+
   const ASTIdentifier* name() const { return name_; }
   const ASTStatement* stmt() const { return stmt_; }
 
@@ -738,8 +740,8 @@ class ASTImportStatement final : public ASTStatement {
 };
 
 class ASTSelectIntoStatement final : public ASTStatement {
-  public:
-  static constexpr ASTNodeKind kConcreteNodeKind = AST_SELECT_INTO_STATEMENT; 
+ public:
+  static constexpr ASTNodeKind kConcreteNodeKind = AST_SELECT_INTO_STATEMENT;
   ASTSelectIntoStatement() : ASTStatement(kConcreteNodeKind) {}
   void Accept(ParseTreeVisitor* visitor, void* data) const override;
   zetasql_base::StatusOr<VisitResult> Accept(
@@ -747,7 +749,10 @@ class ASTSelectIntoStatement final : public ASTStatement {
   const ASTQuery* query() const { return query_; }
   const ASTStringLiteral* out_file() const { return out_file_; }
   const ASTOptionsList* options_list() const { return options_list_; }
-private:
+
+  std::string UnparseQuery() const;
+
+ private:
   void InitFields() final {
     FieldLoader fl(this);
     fl.AddRequired(&query_);
@@ -755,7 +760,7 @@ private:
     fl.AddOptional(&options_list_, AST_OPTIONS_LIST);
   }
 
-  const ASTQuery* query_= nullptr;
+  const ASTQuery* query_ = nullptr;
   const ASTStringLiteral* out_file_ = nullptr;
   const ASTOptionsList* options_list_ = nullptr;
 };
