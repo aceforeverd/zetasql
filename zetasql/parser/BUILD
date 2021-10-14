@@ -220,6 +220,7 @@ cc_library(
         "parse_tree.cc",
         "parse_tree_accept_methods.inc",
         "parse_tree_errors.cc",
+        "unparser.cc",
     ],
     hdrs = [
         "ast_node.h",
