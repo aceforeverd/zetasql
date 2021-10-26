@@ -123,12 +123,15 @@ else
     mv libzetasql.a "$PREFIX/lib"
 fi
 
-echo "{\"version\": \"$VERSION\"}" > "$PREFIX/zetasql.info"
-
 if [[ $OSTYPE = 'darwin'* ]]; then
-    tar czf "${ZETASQL_LIB_NAME}-darwin-$(uname -m).tar.gz" "${ZETASQL_LIB_NAME}"/
+    OUT_FILE="${ZETASQL_LIB_NAME}-darwin-$(uname -m).tar.gz"
 else
-    tar czf "${ZETASQL_LIB_NAME}-$OSTYPE-$(uname -m).tar.gz" "${ZETASQL_LIB_NAME}"/
+    OUT_FILE="${ZETASQL_LIB_NAME}-$OSTYPE-$(uname -m).tar.gz"
+fi
+tar czf "$OUT_FILE" "$ZETASQL_LIB_NAME"/
+
+if [ -n "$1" ] ; then
+    tar xzf "$OUT_FILE" -C "$1" --strip-components=1
 fi
 
 popd
