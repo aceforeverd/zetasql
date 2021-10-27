@@ -4,11 +4,47 @@
 
 set -eE
 
+#===  FUNCTION  ================================================================
+#         NAME:  usage
+#  DESCRIPTION:  Display usage information.
+#===============================================================================
+function usage ()
+{
+    echo "Usage :  $0 [options] [--]
+
+    Options:
+    -h|help       Display this message"
+
+}    # ----------  end of function usage  ----------
+
+#-----------------------------------------------------------------------
+#  Handle command line arguments
+#-----------------------------------------------------------------------
+
+INSTALL_DIR=
+while getopts ":hvi:" opt
+do
+  case $opt in
+
+    h )  usage; exit 0   ;;
+
+    i ) INSTALL_DIR=$OPTARG ;;
+
+    * )  echo -e "\n  Option does not exist : OPTARG\n"
+                usage; exit 1   ;;
+
+  esac    # --- end of case ---
+done
+shift $((OPTIND-1))
+mkdir -p "$INSTALL_DIR"
+INSTALL_DIR=$(cd "$INSTALL_DIR" 2>/dev/null && pwd)
+
 pushd "$(dirname "$0")"
 pushd "$(git rev-parse --show-toplevel)"
 
 VERSION=${TAG:-$(git rev-parse --short HEAD)}
-export ROOT=$(pwd)
+ROOT=$(pwd)
+export ROOT
 export ZETASQL_LIB_NAME="libzetasql-$VERSION"
 export PREFIX="$ROOT/${ZETASQL_LIB_NAME}"
 
@@ -130,8 +166,8 @@ else
 fi
 tar czf "$OUT_FILE" "$ZETASQL_LIB_NAME"/
 
-if [ -n "$1" ] ; then
-    tar xzf "$OUT_FILE" -C "$1" --strip-components=1
+if [ -n "$INSTALL_DIR" ] ; then
+    tar xzf "$OUT_FILE" -C "$INSTALL_DIR" --strip-components=1
 fi
 
 popd
