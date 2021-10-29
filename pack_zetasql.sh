@@ -29,7 +29,11 @@ do
 
     h )  usage; exit 0   ;;
 
-    i ) INSTALL_DIR=$OPTARG ;;
+    i )
+      INSTALL_DIR=$OPTARG
+      mkdir -p "$INSTALL_DIR"
+      INSTALL_DIR=$(cd "$INSTALL_DIR" 2>/dev/null && pwd)
+      ;;
 
     * )  echo -e "\n  Option does not exist : OPTARG\n"
                 usage; exit 1   ;;
@@ -37,8 +41,6 @@ do
   esac    # --- end of case ---
 done
 shift $((OPTIND-1))
-mkdir -p "$INSTALL_DIR"
-INSTALL_DIR=$(cd "$INSTALL_DIR" 2>/dev/null && pwd)
 
 pushd "$(dirname "$0")"
 pushd "$(git rev-parse --show-toplevel)"
