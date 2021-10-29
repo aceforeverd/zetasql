@@ -13,7 +13,8 @@ function usage ()
     echo "Usage :  $0 [options] [--]
 
     Options:
-    -h|help       Display this message"
+    -h       Display this message
+    -i       Request install to given directory after pack"
 
 }    # ----------  end of function usage  ----------
 
@@ -22,7 +23,7 @@ function usage ()
 #-----------------------------------------------------------------------
 
 INSTALL_DIR=
-while getopts ":hvi:" opt
+while getopts ":hi:" opt
 do
   case $opt in
 
