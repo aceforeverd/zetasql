@@ -106,7 +106,7 @@ jobs:
 
       - name: Upload Artifacts
         if: ${{ github.event_name == 'push' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           path: libzetasql-*.tar.gz
           name: release-artifacts
@@ -171,7 +171,7 @@ jobs:
 
       - name: Upload Artifacts
         if: ${{ github.event_name == 'push' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           path: libzetasql-*.tar.gz
           name: release-artifacts
@@ -183,7 +183,9 @@ jobs:
     timeout-minutes: 120
     steps:
       - name: Download Release Artifacts
-        uses: actions/download-artifact@v4
+        # since centos build still using upload-artifact@v3, we must lock
+        # download-artifact version too
+        uses: actions/download-artifact@v3
         with:
           name: release-artifacts
 
